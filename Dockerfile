@@ -1,4 +1,4 @@
-FROM kennethreitz/pipenv:latest
+FROM python:latest
 
 COPY . .
 RUN pip install pipenv
