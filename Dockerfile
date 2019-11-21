@@ -4,4 +4,4 @@ COPY . .
 RUN pip install pipenv
 RUN pipenv install
 
-CMD pipenv run python netecho.py
+ENTRYPOINT pipenv run python netecho.py
