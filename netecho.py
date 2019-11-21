@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     filepath = os.path.join(args.dir, f"{datetime.now().strftime('%Y-%m-%d-%H:%M:%S')}.log")
     logfile = open(filepath, "a", buffering=1)
-    os.symlink(os.path.abspath(filepath), symlinkpath)
+    os.symlink(filepath, symlinkpath)
 
 
     class Handler(BaseHTTPRequestHandler):
