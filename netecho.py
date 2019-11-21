@@ -42,6 +42,7 @@ if __name__ == "__main__":
     logfile = open(filepath, "a", buffering=1)
     os.symlink(os.path.abspath(filepath), symlinkpath)
 
+
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self):
             self.send_response(200)
@@ -54,6 +55,7 @@ if __name__ == "__main__":
             elif self.path == "/stderr":
                 print(get_data(self), file=sys.stderr)
 
+    print(f"running on port:{args.port} logging to {filepath}")
 
-with HTTPServer(('localhost', args.port), Handler) as httpd:
-    httpd.serve_forever()
+    with HTTPServer(('0.0.0.0', args.port), Handler) as httpd:
+        httpd.serve_forever()
