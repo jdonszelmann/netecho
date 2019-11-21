@@ -26,9 +26,14 @@ def get_data(obj):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="This program logs any request with any data it gets.");
 
-    parser.add_argument("-d", "--dir", type=str, help="Directory to write requests to.", default="logs")
-    parser.add_argument("-p", "--port", type=int, help="File to write data to.", default=8000)
+    parser.add_argument("-d", "--dir", type=str, help="Directory to write requests to. Can alternatively be set with "
+                                                      "NETECHO_DIR in envvars.", default="logs")
+    parser.add_argument("-p", "--port", type=int, help="File to write data to. Can alternatively be set with "
+                                                       "NETECHO_PORT in envvars.", default=8000)
     args = parser.parse_args(sys.argv[1:])
+
+    args.port = int(os.environ.get('NETECHO_PORT', args.port))
+    args.dir = os.environ.get('NETECHO_DIR', args.dir)
 
     if not os.path.exists(args.dir):
         os.mkdir(args.dir)

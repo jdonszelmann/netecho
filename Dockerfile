@@ -7,4 +7,4 @@ COPY Pipfile.lock .
 RUN pipenv install
 COPY netecho.py .
 
-ENTRYPOINT pipenv run python netecho.py
+CMD pipenv run python netecho.py
