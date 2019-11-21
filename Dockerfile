@@ -1,4 +1,4 @@
-FROM pipenv:latest
+FROM kennethreitz/pipenv:latest
 
 COPY . .
 RUN pipenv install
