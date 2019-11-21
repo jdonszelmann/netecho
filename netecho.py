@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 print(get_data(self), file=sys.stderr)
 
     print(f"running on port:{args.port} logging to {filepath}")
-    print(f"running on port:{args.port} logging to {filepath}", logfile)
+    print(f"running on port:{args.port} logging to {filepath}", file=logfile)
 
     with HTTPServer(('0.0.0.0', args.port), Handler) as httpd:
         httpd.serve_forever()
