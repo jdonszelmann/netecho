@@ -33,14 +33,17 @@ if __name__ == "__main__":
     if not os.path.exists(args.dir):
         os.mkdir(args.dir)
 
-    symlinkpath = os.path.join(os.path.join(os.getcwd(), args.dir, "latest"))
+    symlinkpath = os.path.join(args.dir, "latest")
 
-    if os.path.exists(symlinkpath):
+    try:
         os.unlink(symlinkpath)
+    except:
+        pass
 
-    filepath = os.path.join(args.dir, f"{datetime.now().strftime('%Y-%m-%d-%H:%M:%S')}.log")
+    filename = f"{datetime.now().strftime('%Y-%m-%d-%H:%M:%S')}.log"
+    filepath = os.path.join(args.dir, filename)
     logfile = open(filepath, "a", buffering=1)
-    os.symlink(os.path.join(os.getcwd(), filepath), symlinkpath)
+    os.symlink(filename, symlinkpath)
 
 
     class Handler(BaseHTTPRequestHandler):
