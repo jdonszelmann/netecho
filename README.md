@@ -13,5 +13,6 @@ without reverse proxy:
 with reverse proxy but no dns access:
 `echo "data" | curl --header 'Host: mysubdomain.domain.com' -F 'f=<-' IP address`
 
-
 To write directly to stdout, post to `/stdout` or `/stderr` 
+
+note: use curl's -L flag to work with traefik as it sends back a redirect.
