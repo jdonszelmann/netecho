@@ -4,6 +4,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 import argparse
 import sys
 from datetime import datetime
+import io
 
 def get_data(obj):
     # It's a huge hack that mostly comes from python2 libraries
@@ -50,6 +51,7 @@ if __name__ == "__main__":
     logfile = open(filepath, "a", buffering=1)
     os.symlink(filename, symlinkpath)
 
+    pubbuffer = bytearray()
 
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self):
@@ -62,6 +64,14 @@ if __name__ == "__main__":
                 print(get_data(self), file=sys.stdout)
             elif self.path == "/stderr":
                 print(get_data(self), file=sys.stderr)
+            elif self.path == "/public":
+                pubbuffer.extend(get_data(self).encode())
+
+        def do_GET(self):
+            self.send_response(200)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(pubbuffer[:1000000])
 
     print(f"running on port:{args.port} logging to {filepath}")
     print(f"running on port:{args.port} logging to {filepath}", file=logfile)
