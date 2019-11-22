@@ -1,9 +1,12 @@
-FROM python:3.7-alpine
-
-RUN pip install pipenv
+FROM python:3.7
 
 COPY Pipfile .
-RUN pipenv install
+COPY Pipfile.lock .
+RUN apt-get install gcc -y && \
+    pip install quart --no-cache-dir && \
+    apt-get remove gcc -y && apt-get clean -y
+
+
 COPY netecho.py .
 
-CMD pipenv run python -u netecho.py
+CMD python -u netecho.py
