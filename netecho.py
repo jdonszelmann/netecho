@@ -6,6 +6,7 @@ import sys
 from datetime import datetime
 import io
 
+
 def get_data(obj):
     # It's a huge hack that mostly comes from python2 libraries
     # but sofar it's the easiest way I found to parse multipart
@@ -53,6 +54,7 @@ if __name__ == "__main__":
 
     pubbuffer = bytearray()
 
+
     class Handler(BaseHTTPRequestHandler):
         def do_POST(self):
             self.send_response(200)
@@ -72,6 +74,7 @@ if __name__ == "__main__":
             self.send_header('Content-type', 'text/plain')
             self.end_headers()
             self.wfile.write(pubbuffer[:1000000])
+
 
     print(f"running on port:{args.port} logging to {filepath}")
     print(f"running on port:{args.port} logging to {filepath}", file=logfile)
