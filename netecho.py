@@ -52,7 +52,6 @@ class ArgsHandler:
 
 args = ArgsHandler()
 
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="This program logs any request with any data it gets.")
 
@@ -64,7 +63,6 @@ if __name__ == '__main__':
                                                       "with NETECHO_URL in envvars.", default="ws://localhost:8000")
 
     args = parser.parse_args(sys.argv[1:])
-
 
 args.port = int(os.environ.get('NETECHO_PORT', args.port))
 args.dir = os.environ.get('NETECHO_DIR', args.dir)
@@ -87,7 +85,7 @@ filepath = os.path.join(args.dir, filename)
 logfile = open(filepath, "a", buffering=1)
 os.symlink(filename, symlinkpath)
 
-hashids = Hashids(salt=''.join(random.choice(string.printable) for i in range(50)))
+hashids = Hashids(salt=''.join(random.choice(string.printable) for i in range(50)), min_length=8)
 
 buffers = dict()
 
@@ -122,7 +120,7 @@ async def route_id(key: str):
     if key not in buffers or key == "favicon.ico":
         abort(404)
     return f"""
-            <p>use <code>echo "whatever" | curl -LF 'f=<-' {str(args.url).replace("ws","http",1)}/{key}
+            <p>use <code>echo "whatever" | curl -LF 'f=<-' -H 'Host:{str(args.url).split('://', 2)[1]}' {str(args.url).replace("ws", "http", 1)}/{key}
             </code> to post to this url</p>
             <pre> </pre>
 
@@ -166,7 +164,6 @@ async def route_ws(key):
 
 print(f"running on port:{args.port} logging to {filepath}")
 print(f"running on port:{args.port} logging to {filepath}", file=logfile)
-
 
 if __name__ == '__main__':
     app.run(

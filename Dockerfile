@@ -10,4 +10,6 @@ RUN pipenv install --deploy --system
 
 COPY netecho.py /app/
 
+EXPOSE 8000
+
 CMD hypercorn -b 0.0.0.0 netecho:app
