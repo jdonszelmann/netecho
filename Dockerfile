@@ -1,12 +1,13 @@
 FROM python:3.7
 
-COPY Pipfile .
-COPY Pipfile.lock .
-RUN apt-get install gcc -y && \
-    pip install quart --no-cache-dir && \
-    apt-get remove gcc -y && apt-get clean -y
+WORKDIR /app
 
+RUN pip install 'pipenv==2018.11.26' --no-cache-dir
 
-COPY netecho.py .
+COPY Pipfile* /app/
 
-CMD python -u netecho.py
+RUN pipenv install --deploy --system
+
+COPY netecho.py /app/
+
+CMD hypercorn -b 0.0.0.0 netecho:app
