@@ -12,4 +12,6 @@ COPY netecho.py /app/
 
 EXPOSE 8000
 
+ENV NETECHO_PORT 8000
+ENV PYTHONBUFFERED 0
 CMD hypercorn -b 0.0.0.0 netecho:app
