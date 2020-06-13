@@ -152,7 +152,8 @@ async def route_id(key: str):
 async def logkey(key):
     if key not in buffers:
         abort(404)
-    buffers[key].push((await get_data(request)).replace("<", "&lt;"))
+
+    buffers[key].push((await get_data(request)).decode().replace("<", "&lt;"))
     return '', 200
 
 
