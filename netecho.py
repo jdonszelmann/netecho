@@ -20,9 +20,8 @@ async def get_data(obj):
             " ".join(i) if isinstance(i, list) else str(i) for i in files.values()
         ))
 
-        raw = (await obj.get_data()).decode()
-        if raw:
-            data += " " + raw
+        if data.strip() == "":
+            data = (await obj.get_data()).decode()
     else:
         data = (await obj.get_data()).decode()
 
