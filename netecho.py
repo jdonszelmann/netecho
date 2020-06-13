@@ -6,6 +6,7 @@ import string
 import sys
 import uuid
 from datetime import datetime
+import urllib.request
 
 from hashids import Hashids
 from quart import Quart, request, websocket, abort, redirect
@@ -121,7 +122,8 @@ async def route_id(key: str):
         abort(404)
     return f"""
             <p>use <code>echo "whatever" | curl -LF 'f=<-' -H 'Host:{str(args.url).split('://', 2)[1]}' {str(args.url).replace("ws", "http", 1)}/{key}
-            </code> to post to this url</p>
+            </code> to post to this url. If no DNS is available, it is possible to replace <code>{str(args.url).replace("ws", "http", 1)}/</code> 
+            with the netecho server's IP address. This works even if netecho runs behind a reverse proxy because of the -H argument.</p>
             <pre> </pre>
 
             <script>
@@ -152,7 +154,8 @@ async def route_id(key: str):
 async def logkey(key):
     if key not in buffers:
         abort(404)
-    buffers[key].push((await get_data(request)).replace("<", "&lt;"))
+
+    buffers[key].push((await get_data(request)).decode().replace("<", "&lt;"))
     return '', 200
 
 
